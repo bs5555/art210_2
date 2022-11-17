@@ -17,6 +17,8 @@ class Boulder extends Sprite
     {
       this.location.x = (width/2.0)+random(10,4000);  //random boulder position
       adjustReg();
+      _jumpCount++;
+      println(_jumpCount);
     }
     if(this.collide()) 
     {

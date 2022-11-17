@@ -14,7 +14,7 @@ class Landscape extends Sprite
   
   void check()
   {
-     this.velocity.x = _speed*this.slowdown;
+    this.velocity.x = _speed*this.slowdown;
     if(this.location.x <= -boxx-(width/2.0))
     {
       this.currentAni = floor(random(0,this.nAni));

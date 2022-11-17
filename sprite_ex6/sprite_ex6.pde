@@ -3,6 +3,9 @@ SoundFile beep;
 PFont f;
 int gameState = 0; //0 startscreen, 1 gameplay, 2 beeing dead
 float _speed = -8;
+int _jumpCount = 0;
+PShape cross;
+
 
 Zombie s;
 Ground[] g;
@@ -21,6 +24,7 @@ int nl3 = 0;
 void setup()
 {
   size(1200,800);
+  fullScreen();
   beep = new SoundFile(this,"beep.wav");
   bg = loadImage("bg.jpg");
   f = createFont("hvd.ttf",100);
@@ -52,19 +56,20 @@ void keyPressed()
 void reset()
 {
   _speed = -8;
+  cross = loadShape("cross.svg");
   s = new Zombie();
   s.location.x=(-width/2)+100;
   s.location.y=(height/2)-200;
-  String[] files = {"zombie1.svg","zombie2.svg"};
+  String[] files = {"zombie1.svg","zombie2.svg"}; //running
   s.addAnimation(files,10);
-  String[] files1 = {"zombie1a.svg","zombie2a.svg"};
+  String[] files1 = {"zombie1a.svg","zombie2a.svg"}; //running backwards
   s.addAnimation(files1,10);
-  String[] files2 = {"zombieup.svg"};
+  String[] files2 = {"zombieup.svg"};  //jump up
   s.addAnimation(files2,10);
-  String[] files3 = {"zombiefall1.svg","zombiefall2.svg"};
+  String[] files3 = {"zombiefall1.svg","zombiefall2.svg"}; //fallimg down
   s.addAnimation(files3,10);
-  String[] files18 = {"zombiedead.svg"};
-  s.addAnimation(files18,10);
+  String[] files18 = {"zombiedead.svg"}; //beeing dead`
+  s.addAnimation(files18,10); 
   s.currentAni=0;
   
   nGround = ceil(width/1000.0)+1; //number of ground element is acconted form screen size and ground element width
@@ -184,6 +189,9 @@ void deadScreen()
 
 void gamePlay()
 {
+  noStroke();
+  fill(color(247,179,178));
+  rect(0,0,width,height);
   image(bg,0,0);
   translate(width/2,height/2);
   for(int i = 0; i < nl1; i = i + 1)
@@ -193,12 +201,7 @@ void gamePlay()
     l1[i].display();
   }
   
-  for(int i = 0; i < nl2; i = i + 1)
-  {
-    l2[i].update();
-    l2[i].check();
-    l2[i].display();
-  }
+  
   
   for(int i = 0; i < nl3; i = i + 1)
   {
@@ -224,4 +227,27 @@ void gamePlay()
   s.update();
   s.check();
   s.display();
+  for(int i = 0; i < nl2; i = i + 1)
+  {
+    l2[i].update();
+    l2[i].check();
+    l2[i].display();
+  }
+  hud();
+}
+
+void hud()
+{
+  if(_jumpCount > 0)
+  {
+    shape(cross,-cross.width/2,-height/2);
+    textAlign(CENTER,CENTER);
+    fill(255,100,100);
+    textSize(30);
+    pushMatrix();
+    translate(0,(-height/2)+80);
+    rotate(radians(-18));
+    text(_jumpCount,0,0);
+    popMatrix();
+  }
 }

@@ -3,10 +3,12 @@ class Zombie extends Sprite
   boolean isJump = false;
   int nJump = 0;
   boolean isDead = false;
+  PShape skull;
   
   Zombie()
   {
     super();
+    skull = loadShape("skull.svg");
   }
   
   void jump()
@@ -62,8 +64,14 @@ class Zombie extends Sprite
       float shadow = map(this.location.y,-height/2.0,height/2.0,0,1.0);
       fill(color(0,0,0,shadow*100));
       shadow = (1.0-shadow)*400.0;
-      ellipse(this.location.x,270,shadow,shadow/5.0);
+      ellipse(this.location.x,(height/2)-130,shadow,shadow/5.0);
+      int ns = 2-this.nJump;
+      if(ns > -1) shape(this.skull,this.location.x-25, this.location.y-140);
+      if(ns > 0) shape(this.skull,this.location.x,    this.location.y-140);
+      if(ns > 1) shape(this.skull,this.location.x+25, this.location.y-140);
     }  
+    
+    
     super.display();  
   }
   
